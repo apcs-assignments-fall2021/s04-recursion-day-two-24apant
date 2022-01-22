@@ -24,7 +24,7 @@ public class MyMain {
     // This is a tail recursive version of numDigits
     // This method should never be called directly;
     // rather the wrapper method numDigits2 should be called
-    public static int numDigitsTR(int x, int count) {
+    private static int numDigitsTR(int x, int count) {
         // Base case
         if (x == 0) {
             return count;
@@ -45,9 +45,28 @@ public class MyMain {
     // countBigDigits(1234) => 0
     // countBigDigits(99999) => 5
     // countBigDigits(521931) => 2
+    public static int firstDigit(int n)
+    {
+        // Remove last digit from number
+        // till only one digit is left
+        return n % 10;
+    }
+
     public static int countBigDigits(int x) {
         // YOUR CODE HERE
-        return -1;
+        if(x == 0){
+            return 0;
+        }
+        else{
+            int firstDigit = firstDigit(x);
+            System.out.println(x);
+            if(firstDigit >= 5){
+                return 1 + countBigDigits(x / 10);
+            }
+            else{
+                return countBigDigits(x / 10);
+            }
+        }
     }
 
     // Write a method that uses recursion to calculate whether
@@ -65,11 +84,26 @@ public class MyMain {
     // moreOddThanEven(521931) => true because 5 odd and 1 even
     public static boolean moreOddThanEven(int x) {
         // YOUR CODE HERE
-        return false;
+        return moreOddThanEvenTR(x, 0, 0);
     }
 
     // This might be helpful to get started:
-//    public static boolean moreOddThanEvenTR(...) {
+    public static boolean moreOddThanEvenTR(int x, int Ocount, int eCount) {
+        if (x == 0){
+            if(Ocount > eCount){
+                return true;
+            }
+            return false;
+        }
+        else{
+            if((x % 10) % 2 == 0){
+                return moreOddThanEvenTR(x / 10, Ocount, eCount + 1);
+            }
+            else{
+                return moreOddThanEvenTR(x / 10, Ocount + 1, eCount);
+            }
+        }
+    }
 
     // This method checks if a String is a palindrome
     // (e.g. "racecar", "madam"), recursively
@@ -82,7 +116,18 @@ public class MyMain {
     // isPalindrome("racecars") => false
     public static boolean isPalindrome(String str) {
         // YOUR CODE HERE
-        return false;
+        if(str.length() < 2){
+            return true;
+        }
+        else{
+            if(str.charAt(0) == str.charAt(str.length() - 1)){
+                return isPalindrome(str.substring(1, str.length() - 1));
+            }
+            else{
+                return false;
+            }
+        }
+
     }
 
 
@@ -99,7 +144,12 @@ public class MyMain {
     // countBigDigits(521931) => 21
     public static int addDigits(int x) {
         // YOUR CODE HERE
-        return -1;
+        if(x == 0){
+            return 0;
+        }
+        else{
+            return (x % 10) + addDigits(x / 10);
+        }
     }
 
     // Write a method that is given a String containing a single pair
@@ -113,7 +163,20 @@ public class MyMain {
     // parenTrim("(xy)1") => "(xy)"
     public static String parenTrim(String str) {
         // YOUR CODE HERE
-        return "";
+        System.out.println(str);
+        if(str.charAt(0) == '('  && str.charAt(str.length() - 1) == ')'){
+            return str;
+        }
+        else if (str.charAt(0) == '(' && str.charAt(str.length() - 1) != ')'){
+            return parenTrim(str.substring(0, str.length() - 1));
+        }
+        else if (str.charAt(0) != '(' && str.charAt(str.length() - 1) == ')'){
+            return parenTrim(str.substring(1));
+        }
+        else{
+            return parenTrim(str.substring(1, str.length() - 1));
+        }
+
     }
 
     // This method returns the orignal string reversed;
@@ -121,9 +184,30 @@ public class MyMain {
     // Examples:
     // reverse("desserts") => stressed
     // reverse("racecar") => racecar
-    public static String reverse(String str) {
-        // YOUR CODE HERE
-        return "";
+    public static String reverse(String str){
+        return reverse(str, 0);
+    }
+    public static String reverse(String str, int iter) {
+        if(iter == str.length() / 2){
+            return str;
+        }
+        else{
+            char tempChar = str.charAt(iter);
+            String newStr = "";
+            for(int i = 0; i < str.length(); i ++){
+                if (i == iter){
+                    newStr += str.charAt(str.length() - 1 - iter);
+                }
+                else if (i == str.length() - 1 - iter){
+                    newStr += tempChar;
+                }
+                else{
+                    newStr +=  str.charAt(i);
+                }
+
+            }
+            return reverse(newStr, iter + 1);
+        }
     }
 
 
